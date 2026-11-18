@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Comprovante de Negativa Assistencial — Montagem (padrão completo)</title>
+<style>
+  :root{
+    --azul:#1F4E79; --azul-claro:#DEEAF6; --azul-borda:#B7CDE4;
+    --ambar:#8A6D1A; --ambar-fundo:#FFF7DE; --ambar-borda:#E8D48A;
+    --cinza-fundo:#EFEFEF; --cinza-borda:#CFCFCF;
+    --verde:#3C6E47; --verde-fundo:#EAF4EC; --verde-borda:#BBD8C2;
+    --vermelho:#C00000; --papel:#FAF9F6; --tinta:#2B2B2B; --mudo:#6B6B6B;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--papel);color:var(--tinta);font-family:'Segoe UI',system-ui,-apple-system,sans-serif;font-size:15px;line-height:1.5}
+  header{border-bottom:3px double var(--azul);text-align:center;padding:24px 16px 16px}
+  header .sup{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--mudo)}
+  header h1{font-family:Georgia,serif;color:var(--azul);font-size:22px;margin:6px 0 4px}
+  header .sub{font-size:13px;color:var(--mudo)}
+  main{max-width:780px;margin:0 auto;padding:24px 18px 60px}
+  .bloco{border:1px solid var(--azul-borda);border-radius:10px;overflow:hidden;margin-bottom:18px;background:var(--azul-claro)}
+  .bloco.verde{border-color:var(--verde-borda);background:var(--verde-fundo)}
+  .bloco-cab{display:flex;align-items:center;gap:12px;padding:8px 16px;background:var(--azul)}
+  .bloco.verde .bloco-cab{background:var(--verde)}
+  .bloco-cab .num{font-family:Georgia,serif;font-size:18px;font-weight:bold;color:#fff}
+  .bloco-cab h2{font-family:Georgia,serif;font-size:15.5px;color:#fff;margin:0;font-weight:bold}
+  .bloco-corpo{padding:16px}
+  .guia{font-style:italic;color:var(--mudo);font-size:13.5px;margin:0 0 12px}
+  .rotulo{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.6px;color:var(--azul);margin-bottom:4px}
+  input[type=text],textarea,select{width:100%;font-family:inherit;font-size:15px;color:var(--tinta);background:#fff;border:1px solid var(--azul-borda);border-radius:6px;padding:8px 10px}
+  textarea{resize:vertical}
+  .campo{margin-bottom:12px}
+  .grade2{display:grid;grid-template-columns:1fr 1fr;gap:0 16px}
+  .grade3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:0 12px}
+  @media(max-width:600px){.grade2,.grade3{grid-template-columns:1fr}}
+  .check-linha{display:flex;align-items:flex-start;gap:8px;font-size:14px;margin-bottom:8px;cursor:pointer}
+  .check-linha input{margin-top:3px}
+  .sub-secao{background:#fff;border:1px solid var(--azul-borda);border-radius:8px;padding:12px;margin-top:8px;display:none}
+  button{font-family:inherit;font-size:15px;font-weight:600;border-radius:8px;padding:12px 26px;cursor:pointer;border:none}
+  .btn-verde{background:var(--verde);color:#fff}
+  .btn-copiar{background:var(--azul);color:#fff}
+  .btn-linha{background:#fff;color:var(--azul);border:1.5px solid var(--azul)}
+  button:disabled{opacity:.5;cursor:not-allowed}
+  .erro{background:#FDECEC;border:1px solid var(--vermelho);color:var(--vermelho);border-radius:8px;padding:10px 14px;font-size:14px;margin-bottom:14px;display:none}
+  #saida{display:none;border:1px solid var(--azul-borda);border-radius:10px;overflow:hidden;margin-top:8px;background:#fff}
+  #saida .cab{background:var(--azul);color:#fff;font-family:Georgia,serif;font-weight:bold;padding:10px 16px}
+  #saida .corpo{padding:16px}
+  .texto-saida{font-family:Georgia,serif;white-space:pre-wrap;font-size:13.5px;line-height:1.6;margin-bottom:14px;max-height:460px;overflow-y:auto;border:1px solid #eee;padding:12px;border-radius:6px}
+  .acoes{display:flex;flex-wrap:wrap;gap:10px}
+  footer{text-align:center;font-size:11.5px;color:var(--mudo);padding:24px 16px 40px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="sup">Unimed Tubarão · Autorizações</div>
+  <h1>Comprovante de Negativa Assistencial</h1>
+  <div class="sub">Padrão completo (normas transcritas) · conforme RN ANS nº 623/2024</div>
+</header>
+
+<main>
+
+  <!-- BLOCO 1 -->
+  <div class="bloco">
+    <div class="bloco-cab"><span class="num">1</span><h2>Dados do beneficiário e do pedido</h2></div>
+    <div class="bloco-corpo">
+      <p class="guia">Copie estes dados da guia e do cadastro. Entram no cabeçalho da carta.</p>
+      <div class="grade2">
+        <div class="campo"><div class="rotulo">Nome do beneficiário</div><input type="text" id="nome" placeholder="Sr.(a) ..."></div>
+        <div class="campo"><div class="rotulo">Data de nascimento</div><input type="text" id="nascimento" placeholder="dd/mm/aaaa"></div>
+        <div class="campo"><div class="rotulo">Data de adesão/assinatura</div><input type="text" id="adesao" placeholder="dd/mm/aaaa"></div>
+        <div class="campo"><div class="rotulo">Código do cartão</div><input type="text" id="cartao" placeholder="0000.0000.000000-00"></div>
+        <div class="campo"><div class="rotulo">Nº do plano na ANS</div><input type="text" id="planoAns" placeholder="000000000"></div>
+        <div class="campo"><div class="rotulo">Contrato nº</div><input type="text" id="contrato" placeholder="0000000000"></div>
+        <div class="campo"><div class="rotulo">Plano / abrangência</div><input type="text" id="plano" placeholder="Ex.: Uniflex Estadual 50%"></div>
+        <div class="campo"><div class="rotulo">Protocolo nº</div><input type="text" id="protocolo" placeholder="000000 0000 00 00 000000"></div>
+        <div class="campo"><div class="rotulo">Data da solicitação</div><input type="text" id="dataSolicitacao" placeholder="dd/mm/aaaa"></div>
+        <div class="campo"><div class="rotulo">Médico solicitante</div><input type="text" id="solicitante" placeholder="Dr.(a) ..."></div>
+      </div>
+      <div class="campo"><div class="rotulo">Procedimento / serviço solicitado</div>
+        <input type="text" id="procedimento" placeholder="Ex.: internação hospitalar / fotobiomodulação — TUSS ..."></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 2 - MOTIVO -->
+  <div class="bloco">
+    <div class="bloco-cab"><span class="num">2</span><h2>Motivo da negativa (escolha o tipo)</h2></div>
+    <div class="bloco-corpo">
+      <p class="guia">Escolha o fundamento conforme definido pela auditoria. Cada tipo abre os campos próprios e transcreve as normas correspondentes na íntegra.</p>
+      <div class="campo">
+        <select id="tipoMotivo" onchange="mostrarSubsecao()">
+          <option value="">— selecione —</option>
+          <option value="carencia">Carência não cumprida</option>
+          <option value="dut">DUT não preenchida (procedimento no Rol, mas com diretriz)</option>
+          <option value="foraRol">Procedimento fora do Rol (aplica ADI 7.265)</option>
+          <option value="segmentacao">Fora da segmentação / abrangência contratada</option>
+          <option value="outro">Outro (texto livre da auditoria)</option>
+        </select>
+      </div>
+
+      <!-- carência -->
+      <div class="sub-secao" id="sub-carencia">
+        <div class="grade3">
+          <div class="campo"><div class="rotulo">Tipo de carência</div><input type="text" id="car_tipo" placeholder="Ex.: internação hospitalar"></div>
+          <div class="campo"><div class="rotulo">Prazo de carência</div><input type="text" id="car_prazo" placeholder="Ex.: 180 dias"></div>
+          <div class="campo"><div class="rotulo">Fim da carência</div><input type="text" id="car_fim" placeholder="dd/mm/aaaa"></div>
+        </div>
+        <div class="grade2">
+          <div class="campo"><div class="rotulo">Cláusula de coberturas</div><input type="text" id="car_clausula4" placeholder="Ex.: 4ª"></div>
+          <div class="campo"><div class="rotulo">Cláusula de carência</div><input type="text" id="car_clausula7" placeholder="Ex.: 7ª"></div>
+        </div>
+        <div class="campo"><div class="rotulo">Texto integral da Cláusula de coberturas (cole do contrato, opcional)</div>
+          <textarea id="car_txt4" rows="2" placeholder="Cole aqui o texto da cláusula; se vazio, entra um texto padrão"></textarea></div>
+        <div class="campo"><div class="rotulo">Texto integral da tabela/cláusula de carência (cole do contrato, opcional)</div>
+          <textarea id="car_txt7" rows="2" placeholder="Cole aqui o texto/tabela de carência; se vazio, entra um texto padrão"></textarea></div>
+        <label class="check-linha"><input type="checkbox" id="car_urgencia" checked><span>Foi avaliado e <strong>não</strong> se trata de urgência/emergência (transcreve art. 35-C e CONSU 13 na íntegra)</span></label>
+      </div>
+
+      <!-- DUT -->
+      <div class="sub-secao" id="sub-dut">
+        <div class="grade2">
+          <div class="campo"><div class="rotulo">DUT nº</div><input type="text" id="dut_num" placeholder="Ex.: 51"></div>
+          <div class="campo"><div class="rotulo">RN do Rol vigente</div><input type="text" id="dut_rn" placeholder="Ex.: 465/2021 + alterações [A CONFIRMAR]"></div>
+        </div>
+        <div class="campo"><div class="rotulo">Item/critério da DUT não preenchido</div>
+          <textarea id="dut_motivo" rows="2" placeholder="Ex.: ausência de mucosite documentada (hipótese 3 da DUT 51)"></textarea></div>
+        <div class="campo"><div class="rotulo">Texto integral da DUT (cole do Anexo II, opcional)</div>
+          <textarea id="dut_txt" rows="2" placeholder="Cole aqui o texto da diretriz para transcrever na carta"></textarea></div>
+      </div>
+
+      <!-- fora do Rol -->
+      <div class="sub-secao" id="sub-foraRol">
+        <div class="campo"><div class="rotulo">RN do Rol vigente consultada</div><input type="text" id="fr_rn" placeholder="Ex.: 465/2021 + alterações [A CONFIRMAR]"></div>
+        <div class="rotulo">Requisitos da ADI 7.265 NÃO atendidos (marque)</div>
+        <div id="adiLista"></div>
+      </div>
+
+      <!-- segmentação -->
+      <div class="sub-secao" id="sub-segmentacao">
+        <div class="campo"><div class="rotulo">Cláusula de segmentação/abrangência</div><input type="text" id="seg_clausula" placeholder="Ex.: 4ª, parágrafo segundo"></div>
+        <div class="campo"><div class="rotulo">Explique a exclusão de segmentação/abrangência</div>
+          <textarea id="seg_motivo" rows="2" placeholder="Ex.: procedimento hospitalar em plano ambulatorial; fora da área de abrangência estadual"></textarea></div>
+      </div>
+
+      <!-- outro -->
+      <div class="sub-secao" id="sub-outro">
+        <div class="campo"><div class="rotulo">Fundamento (texto da auditoria / banco de justificativas)</div>
+          <textarea id="outro_texto" rows="3" placeholder="Cole aqui o fundamento indicado pela auditoria"></textarea></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BLOCO 3 - JUSTIFICATIVA CLÍNICA -->
+  <div class="bloco">
+    <div class="bloco-cab"><span class="num">3</span><h2>Justificativa técnica (do banco de justificativas)</h2></div>
+    <div class="bloco-corpo">
+      <p class="guia">Cole o texto técnico já adaptado pela auditoria. Se a negativa for puramente por carência ou segmentação, pode deixar em branco.</p>
+      <div class="campo"><textarea id="justificativa" rows="4" placeholder="Da análise técnica dos documentos apresentados, verifica-se que..."></textarea></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 4 - RESSALVA -->
+  <div class="bloco">
+    <div class="bloco-cab"><span class="num">4</span><h2>Quando o pedido pode voltar (ressalva)</h2></div>
+    <div class="bloco-corpo">
+      <p class="guia">Cole a frase indicada pela auditoria dizendo em que situação o pedido pode ser reapresentado.</p>
+      <div class="campo"><textarea id="ressalva" rows="2" placeholder="Ex.: Cumprido o prazo de carência em [data], a internação passa a ter cobertura contratual."></textarea></div>
+    </div>
+  </div>
+
+  <!-- BLOCO 5 - JUNTA -->
+  <div class="bloco">
+    <div class="bloco-cab"><span class="num">5</span><h2>Tipo da negativa</h2></div>
+    <div class="bloco-corpo">
+      <label class="check-linha"><input type="radio" name="junta" value="reg" checked>
+        <span><strong>Regulatória/contratual</strong> (carência, fora do Rol, segmentação) — o texto oferece reanálise pela Ouvidoria.</span></label>
+      <label class="check-linha"><input type="radio" name="junta" value="clin">
+        <span><strong>Divergência clínica</strong> — o texto oferece reanálise e também junta médica (RN 623/2024).</span></label>
+    </div>
+  </div>
+
+  <!-- CHECKLIST -->
+  <div class="bloco verde">
+    <div class="bloco-cab"><h2>Conferência final</h2></div>
+    <div class="bloco-corpo">
+      <div id="checklist"></div>
+      <div id="contador" style="font-weight:700;font-size:14px;margin-top:6px">0 de 6 itens conferidos</div>
+    </div>
+  </div>
+
+  <div class="erro" id="erro"></div>
+
+  <div style="display:flex;flex-wrap:wrap;gap:12px;margin-bottom:26px">
+    <button class="btn-verde" onclick="montar()">Montar carta de negativa</button>
+  </div>
+
+  <div id="saida">
+    <div class="cab">Comprovante de Negativa Assistencial (pronto para o sistema)</div>
+    <div class="corpo">
+      <div class="texto-saida" id="textoSaida"></div>
+      <div class="acoes">
+        <button class="btn-copiar" id="btnCopiar" onclick="copiar()">Copiar para o sistema</button>
+        <button class="btn-linha" onclick="baixarWord()">Baixar em Word</button>
+      </div>
+      <p class="guia" style="margin-top:12px">Cabeçalho institucional, logotipo e assinatura já constam no sistema de negativa da Unimed e por isso não são incluídos aqui.</p>
+    </div>
+  </div>
+
+  <footer>
+    Padrão completo com normas transcritas, conforme RN ANS nº 623/2024 (art. 14 e art. 16).<br>
+    Itens marcados [A CONFIRMAR] devem ser verificados nas fontes oficiais antes da emissão.
+  </footer>
+</main>
+
+<script>
+const ADI = [
+  "prescrição por médico ou odontólogo assistente habilitado",
+  "inexistência de alternativa terapêutica equivalente já prevista no Rol",
+  "comprovação de eficácia e segurança por evidência científica de alto nível",
+  "registro do produto/tecnologia na ANVISA",
+  "inexistência de negativa de incorporação pela ANS ou pendência no PAR"
+];
+const CHECK = [
+  "Dados do beneficiário conferidos com a guia e o cadastro",
+  "Tipo do motivo selecionado e campos próprios preenchidos",
+  "Cláusula contratual OU dispositivo legal presente (exigência da RN 623/2024)",
+  "Ressalva de reavaliação preenchida",
+  "Nenhum item [A CONFIRMAR] restante (ou todos verificados)",
+  "Carta lida do início ao fim antes de copiar"
+];
+
+// --- textos legais transcritos na íntegra ---
+const REC='          '; // recuo para blocos citados
+function citar(texto){return texto.split('\n').map(l=>REC+l).join('\n');}
+
+const ART_35C = citar(
+`Art. 35-C. É obrigatória a cobertura do atendimento nos casos:
+I - de emergência, como tal definidos os que implicarem risco imediato de vida ou de lesões irreparáveis para o paciente, caracterizado em declaração do médico assistente;
+II - de urgência, assim entendidos os resultantes de acidentes pessoais ou de complicações no processo gestacional;
+III - de planejamento familiar.`);
+
+const CONSU_13 = citar(
+`RESOLUÇÃO DO CONSELHO DE SAÚDE SUPLEMENTAR — CONSU Nº 13, DE 3 DE NOVEMBRO DE 1998
+Art. 1º - A cobertura dos procedimentos de emergência e urgência de que trata o art. 35-D, da Lei nº 9.656/98, que implicar em risco imediato de vida ou de lesões irreparáveis para o paciente, incluindo os resultantes de acidentes pessoais ou de complicações no processo gestacional, deverá reger-se pela garantia da atenção e atuação no sentido da preservação da vida, órgãos e funções, variando, a partir daí, de acordo com a segmentação de cobertura a qual o contrato esteja adscrito.
+§ 3º - Nos casos em que a atenção não venha a se caracterizar como própria do plano hospitalar, ou como de risco de vida, ou ainda, de lesões irreparáveis, não haverá a obrigatoriedade de cobertura por parte da operadora.`);
+
+const ADILEI = citar(
+`Lei nº 14.454/2022 e ADI 7.265/DF (STF, 18/09/2025) — a cobertura de tecnologia não constante do Rol depende do preenchimento cumulativo dos seguintes requisitos: existência de prescrição por médico ou odontólogo assistente habilitado; inexistência de alternativa terapêutica equivalente já prevista no Rol; comprovação de eficácia e segurança à luz da medicina baseada em evidências; registro do produto ou tecnologia na ANVISA; e inexistência de negativa expressa de incorporação pela ANS ou de pendência de análise no respectivo processo administrativo (PAR).`);
+
+const adiLista=document.getElementById('adiLista');
+ADI.forEach(r=>adiLista.insertAdjacentHTML('beforeend',
+  `<label class="check-linha"><input type="checkbox" class="adiChk" value="${r}"><span>${r}</span></label>`));
+const chkDiv=document.getElementById('checklist');
+CHECK.forEach((c,i)=>chkDiv.insertAdjacentHTML('beforeend',
+  `<label class="check-linha"><input type="checkbox" class="listaChk" onchange="contar()"><span>${i+1}. ${c}</span></label>`));
+function contar(){
+  const n=document.querySelectorAll('.listaChk:checked').length;
+  const el=document.getElementById('contador');
+  el.textContent=n+" de 6 itens conferidos";
+  el.style.color=n===6?'var(--verde)':'var(--ambar)';
+}
+
+function mostrarSubsecao(){
+  ['carencia','dut','foraRol','segmentacao','outro'].forEach(s=>document.getElementById('sub-'+s).style.display='none');
+  const t=document.getElementById('tipoMotivo').value;
+  if(t)document.getElementById('sub-'+t).style.display='block';
+}
+function v(id){const el=document.getElementById(id);return el?el.value.trim():''}
+
+function textoMotivo(){
+  const t=document.getElementById('tipoMotivo').value;
+  const B=[];
+  if(t==='carencia'){
+    B.push(`Cumpre destacar que o plano ao qual V.S.ª está vinculado é regulamentado pela Lei nº 9.656/98 e segue as determinações das resoluções normativas da Agência Nacional de Saúde Suplementar (ANS), que estabelecem o Rol de Procedimentos e Eventos em Saúde de cobertura obrigatória, conforme a Cláusula ${v('car_clausula4')||'[___]'} do contrato pactuado:`);
+    B.push('');
+    B.push(v('car_txt4')?citar(v('car_txt4')):citar(`CLÁUSULA ${v('car_clausula4')||'[___]'} — COBERTURAS E PROCEDIMENTOS GARANTIDOS\nA cobertura observa o Rol de Procedimentos e Eventos em Saúde determinado pela ANS, vigente à época do evento, respeitados os limites de carência, área de abrangência, atuação, segmentação e cláusulas de exclusão estabelecidas neste contrato.`));
+    B.push('');
+    B.push(`Neste sentido, o contrato encontrava-se em período de carência para ${v('car_tipo')||'[procedimento]'} na data da solicitação, conforme prevê expressamente a Cláusula ${v('car_clausula7')||'[___]'}:`);
+    B.push('');
+    B.push(v('car_txt7')?citar(v('car_txt7')):citar(`CLÁUSULA ${v('car_clausula7')||'[___]'} — PERÍODOS DE CARÊNCIA\nPara que possam beneficiar-se dos serviços, os beneficiários devem cumprir os períodos de carência estabelecidos no contrato, contados a partir da data da inscrição. Para ${v('car_tipo')||'[procedimento]'}, o prazo é de ${v('car_prazo')||'[prazo]'}.`));
+    B.push('');
+    B.push(`Dessa forma, considerando a data de adesão, constata-se que o prazo de carência somente se encerraria em ${v('car_fim')||'[data]'}.`);
+    if(document.getElementById('car_urgencia').checked){
+      B.push('');
+      B.push(`De acordo com a ANS, situações de urgência são casos resultantes de acidentes pessoais ou de complicações durante a gravidez que necessitam de atenção imediata, e situações de emergência são aquelas que implicam risco imediato de morte ou de lesões irreparáveis. Complementando, destaca-se o disposto na Lei nº 9.656/98:`);
+      B.push('');
+      B.push(ART_35C);
+      B.push('');
+      B.push(`Em análise da solicitação, verifica-se que não se trata de caso de urgência ou emergência, motivo pelo qual não se vislumbra a possibilidade de cobertura antes do cumprimento do prazo de carência. Nesse sentido, destaca-se ainda a Resolução CONSU nº 13:`);
+      B.push('');
+      B.push(CONSU_13);
+    }
+    B.push('');
+    B.push(`Outrossim, considerando a inexistência de urgência e emergência, afigura-se a legalidade da negativa em razão do disposto no art. 12 da Lei nº 9.656/98, que prevê a possibilidade de fixação de prazo de carência, cláusula esta que consta expressa no contrato firmado. Desse modo, inexistindo obrigatoriedade de cobertura, a negativa apresenta-se em consonância com as normas legais.`);
+    return B.join('\n');
+  }
+  if(t==='dut'){
+    B.push(`O procedimento solicitado integra o Rol de Procedimentos e Eventos em Saúde vigente (RN ANS nº ${v('dut_rn')||'[A CONFIRMAR]'}); todavia, sua cobertura está condicionada ao atendimento da Diretriz de Utilização nº ${v('dut_num')||'[___]'} do Anexo II, a seguir transcrita:`);
+    B.push('');
+    B.push(v('dut_txt')?citar(v('dut_txt')):citar(`DIRETRIZ DE UTILIZAÇÃO Nº ${v('dut_num')||'[___]'} — [texto da diretriz a inserir do Anexo II da RN vigente]`));
+    B.push('');
+    B.push(`No caso em tela, os critérios da diretriz não se encontram preenchidos: ${v('dut_motivo')||'[detalhar]'}. Não preenchidos os requisitos da diretriz, não se configura a obrigatoriedade de cobertura, nos termos da Lei nº 9.656/98 e da regulamentação da ANS.`);
+    return B.join('\n');
+  }
+  if(t==='foraRol'){
+    const falhos=[...document.querySelectorAll('.adiChk:checked')].map(x=>x.value);
+    B.push(`O procedimento solicitado não consta do Rol de Procedimentos e Eventos em Saúde vigente (RN ANS nº ${v('fr_rn')||'[A CONFIRMAR]'}). A cobertura de tecnologia não listada rege-se pelos seguintes parâmetros legais e jurisprudenciais:`);
+    B.push('');
+    B.push(ADILEI);
+    B.push('');
+    if(falhos.length){
+      B.push(`No caso em tela, não se verifica o preenchimento cumulativo, faltando: ${falhos.join('; ')}. Ausente ao menos um dos requisitos, não se configura a obrigatoriedade de cobertura.`);
+    }else{
+      B.push('[MARCAR ao menos um requisito não atendido no formulário]');
+    }
+    return B.join('\n');
+  }
+  if(t==='segmentacao'){
+    B.push(`A cobertura contratada observa a segmentação e a área de abrangência pactuadas, conforme a Cláusula ${v('seg_clausula')||'[___]'} do contrato. No caso em tela, ${v('seg_motivo')||'[detalhar]'}, situação que se enquadra nas exclusões previstas no art. 10 da Lei nº 9.656/98 e no contrato, motivo pelo qual não se configura a obrigatoriedade de cobertura.`);
+    return B.join('\n');
+  }
+  if(t==='outro'){return v('outro_texto')||'[fundamento a preencher]';}
+  return '';
+}
+
+function montar(){
+  esconderErro();
+  const t=document.getElementById('tipoMotivo').value;
+  if(!t){mostrarErro('Selecione o tipo de motivo da negativa (Bloco 2).');return;}
+  if(!v('ressalva')){mostrarErro('Preencha a ressalva de reavaliação (Bloco 4).');return;}
+
+  const hoje=new Date().toLocaleDateString('pt-BR');
+  const junta=document.querySelector('input[name=junta]:checked').value;
+  const L=[];
+
+  L.push('COMPROVANTE DE NEGATIVA ASSISTENCIAL');
+  L.push('(Documento expedido em conformidade com a RN ANS nº 623/2024)');
+  L.push('');
+  L.push(`Tubarão (SC), ${hoje}.`);
+  L.push('');
+  L.push(`Sr.(a) ${v('nome')||'[NOME]'}`);
+  L.push(`Data de adesão/assinatura: ${v('adesao')||'[___]'}          Data de nascimento: ${v('nascimento')||'[___]'}`);
+  L.push(`Código do cartão nº: ${v('cartao')||'[___]'}          Abrangência/Plano: ${v('plano')||'[___]'}`);
+  L.push(`Número do plano na ANS: ${v('planoAns')||'[___]'}          Operadora: Unimed Tubarão`);
+  L.push(`Contrato nº: ${v('contrato')||'[___]'}          Protocolo nº: ${v('protocolo')||'[___]'}`);
+  L.push(`Data de solicitação: ${v('dataSolicitacao')||'[___]'}          Solicitante: ${v('solicitante')||'[___]'}`);
+  L.push('');
+  L.push(`Prezado(a) Senhor(a), a Unimed Tubarão, operadora de planos de assistência privada à saúde, em atenção à solicitação de autorização para ${v('procedimento')||'[PROCEDIMENTO]'}, informa que, para que haja o deferimento conforme solicitado, faz-se necessário o preenchimento dos requisitos elencados pela Agência Reguladora e pactuados em seu contrato, os quais são submetidos às regras da Lei nº 9.656/98 e às diretrizes determinadas pelas resoluções normativas expedidas pela ANS. A presente negativa é comunicada em linguagem clara, nos termos do art. 14 da RN ANS nº 623/2024, pelo motivo a seguir exposto.`);
+  L.push('');
+  L.push('MOTIVO DA NEGATIVA:');
+  L.push(textoMotivo());
+  const jt=v('justificativa');
+  if(jt){L.push('');L.push(jt);}
+  L.push('');
+  L.push(v('ressalva'));
+  L.push('');
+  L.push('Ainda, o próprio Código de Defesa do Consumidor autoriza cláusulas limitativas de direitos quando existe vedação contratual expressa, informada à contratante antes da formalização do ajuste, de modo que a negativa da Operadora apresenta-se válida e em consonância com as normas legais, motivo pelo qual a não autorização é medida que se impõe.');
+  L.push('');
+  L.push('Por fim, informamos que V.S.ª pode solicitar o pedido de reanálise no prazo de 5 (cinco) dias úteis contados do recebimento desta resposta. O pedido de reanálise deve ser feito junto à Ouvidoria da Unimed Tubarão, pelo telefone 0800 645 0221 ou pelo e-mail ouvidoria@unimedtubarao.com.br, devendo o beneficiário informar o número do protocolo e apresentar cópias da guia médica, deste Comprovante de Negativa Assistencial e da Justificativa Médica.');
+  if(junta==='clin'){
+    L.push('');
+    L.push('Tratando-se de divergência de natureza clínica, informamos, ainda, que é cabível o requerimento de junta médica, nos termos da RN ANS nº 623/2024, hipótese em que o pedido deverá vir instruído com a manifestação de divergência do profissional de saúde solicitante.');
+  }
+  L.push('');
+  L.push('O prazo para a resposta da reanálise pela Ouvidoria é de 7 (sete) dias úteis, contados do recebimento do pedido, admitida a dilação para até 30 (trinta) dias úteis nos casos excepcionais ou de maior complexidade, desde que devidamente justificados.');
+  L.push('');
+  L.push('Feitos os esclarecimentos supra, e certos da compreensão de V.S.ª, externamos nossos votos de estima e apreço.');
+  L.push('');
+  L.push('À disposição,');
+  L.push('Unimed Tubarão');
+
+  textoFinal=L.join('\n');
+  document.getElementById('textoSaida').textContent=textoFinal;
+  document.getElementById('saida').style.display='block';
+  document.getElementById('saida').scrollIntoView({behavior:'smooth'});
+}
+
+let textoFinal='';
+function copiar(){
+  const feito=()=>{const b=document.getElementById('btnCopiar');b.textContent='Copiado ✓';setTimeout(()=>b.textContent='Copiar para o sistema',2000);};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(textoFinal).then(feito).catch(()=>fb(feito));}else fb(feito);
+}
+function fb(feito){const ta=document.createElement('textarea');ta.value=textoFinal;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');feito();}catch(e){}document.body.removeChild(ta);}
+function baixarWord(){
+  const seguro=textoFinal.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').split('\n').map(l=>l.trim()===''?'<p>&nbsp;</p>':`<p>${l.replace(/^ +/,m=>'&nbsp;'.repeat(m.length))}</p>`).join('');
+  const html=`<!DOCTYPE html><html><head><meta charset="utf-8"><style>body{font-family:'Times New Roman',serif;font-size:12pt;line-height:1.5;margin:2.5cm}p{margin:0 0 6pt;text-align:justify}</style></head><body>${seguro}</body></html>`;
+  const blob=new Blob(['\ufeff'+html],{type:'application/msword'});
+  const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='negativa_assistencial.doc';document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+function mostrarErro(m){const e=document.getElementById('erro');e.textContent=m;e.style.display='block';}
+function esconderErro(){document.getElementById('erro').style.display='none';}
+</script>
+</body>
+</html>
